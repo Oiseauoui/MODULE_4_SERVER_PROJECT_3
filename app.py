@@ -13,13 +13,13 @@ from flask import Flask
 from jinja2 import Environment, FileSystemLoader
 import time
 
+env = Environment(loader=FileSystemLoader('templates'))
 app = Flask(__name__, template_folder='templates')
-
+logging.basicConfig(level=logging.DEBUG)
+app.logger.setLevel(logging.DEBUG)
 
 BASE_DIR = pathlib.Path()
 
-
-env = Environment(loader=FileSystemLoader('templates'))
 json_file_path = None
 
 SERVER_IP = '127.0.0.1'
@@ -55,8 +55,10 @@ class HTTPHandler(BaseHTTPRequestHandler):
                 self.send_html('index.html')
             case "/message":
                 self.send_html('message.html')
+            # case "/blog":
+            #     self.render_template('blog.html')
             case "/blog":
-                self.render_template('blog.html')
+                self.send_html('blog.html')
             case _:
                 # print(BASE_DIR / route.path[1:])
                 file = BASE_DIR / route.path[1:]
@@ -78,18 +80,25 @@ class HTTPHandler(BaseHTTPRequestHandler):
         self.send_response(status_code)
         self.send_header('Content-Type', 'text/html')
         self.end_headers()
-        with open('blog.json', 'r', encoding='utf-8') as file_descriptor:
-            r = json.load(file_descriptor)
-
-        template = env.get_template(filename)
-        print("Template loaded:", template)
 
         try:
-            html = template.render(blogs=r)
+            with open('blog.json', 'r', encoding='utf-8') as file_descriptor:
+                blogs = json.load(file_descriptor)
+            print(blogs)
+            print("Data loaded from blog.json:", blogs)
+        except Exception as e:
+            print(f"Error loading data from blog.json: {e}")
+            blogs = []
+
+        template = env.get_template(filename)
+
+        try:
+            html = template.render(blogs=blogs)
             self.wfile.write(html.encode())
             print("Rendering successful")
         except Exception as e:
             print(f"Error rendering template: {e}")
+            self.send_error(500, message="Internal Server Error")
 
     def send_static(self, filename):
         self.send_response(200)
@@ -138,7 +147,6 @@ def save_data(data):
         logging.error(f"Failed to parse data {body} with error {err}")
     except OSError as err:
         logging.error(f"Failed to write data to {json_file_path} with error {err}")
-
 
 
 def run_socket_server(ip, port):

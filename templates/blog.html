@@ -55,6 +55,13 @@
       </div>
       {% endfor %}
       <!-- /.blog-post -->
+      {% if blogs %}
+          <p>Total blog posts: {{ blogs|length }}</p>
+      {% else %}
+          <p>No blog posts found.</p>
+      {% endif %}
+        <!-- Add this for additional output -->
+      <p>Debug: {{ blogs }}</p>
     </div>
     <!-- /.blog-main -->
   </div>

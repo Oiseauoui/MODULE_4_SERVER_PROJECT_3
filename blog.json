@@ -1,21 +1,20 @@
 [
-  {
-    "title": "First",
-    "author": "Denys",
-    "date": "2023-11-18",
-    "text": "Text Deutsch"
-  },
-  {
-    "title": "Second",
-    "author": "Ann",
-    "date": "2023-11-17",
-    "text": "Text Polish"
-  },
-  {
-    "title": "Thirst",
-    "author": "Tony",
-    "date": "2023-11-16",
-    "text": "Text English"
-  }
-
+    {
+        "title": "First Article",
+        "author": "John Doe",
+        "date": "2023-11-18",
+        "text": "This is the text of the first article."
+    },
+    {
+        "title": "Second Article",
+        "author": "Jane Smith",
+        "date": "2023-11-17",
+        "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+    },
+    {
+        "title": "Third Article",
+        "author": "Bob Johnson",
+        "date": "2023-11-16",
+        "text": "Another article for demonstration purposes."
+    }
 ]
